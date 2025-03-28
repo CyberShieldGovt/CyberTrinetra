@@ -8,9 +8,11 @@ import CaseCard from '@/components/CaseCard';
 import GallerySection from '@/components/GallerySection';
 import FactCheckerIntro from '@/components/FactCheckerIntro';
 import { useAuth } from '@/components/AuthContext';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
   const { isAuthenticated } = useAuth();
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -84,7 +86,7 @@ const Index = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="hidden lg:block"
+              className={isMobile ? "mt-8" : "hidden lg:block"}
             >
               <div className="relative">
                 <div className="absolute -inset-4 bg-cyber-blue/20 rounded-full blur-xl animate-pulse-glow"></div>
@@ -143,7 +145,7 @@ const Index = () => {
                   </Button>
                 </Link>
               </div>
-              <div className="hidden lg:block">
+              <div className={isMobile ? "mt-8" : "hidden lg:block"}>
                 <img 
                   src="/uploaded-images/FactChecker.jpg"
                   alt="Fact Checker" 
