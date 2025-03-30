@@ -9,23 +9,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from 'sonner';
+import { getComplainById } from '@/services';
 
 type CaseStatus = {
-  caseNumber: string;
+  complainId: string;
   category: string;
-  dateTime: string;
-  firCopy: string;
-  briefing: string;
+  approxDate: string;
+  firUrl: string;
+  supportingDocUrl: string;
+  description: string;
   status: string;
-  comments: string;
+  comment: string;
 } | null;
 
 const CaseStatus = () => {
-  const [caseNumber, setCaseNumber] = useState('');
+  const [caseNumber, setCaseNumber] = useState<string>('');
   const [isSearching, setIsSearching] = useState(false);
   const [caseStatus, setCaseStatus] = useState<CaseStatus>(null);
   const [error, setError] = useState('');
-  
+
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
@@ -37,38 +39,31 @@ const CaseStatus = () => {
     return <Navigate to="/login" />;
   }
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!caseNumber.trim()) {
       setError('Please enter a case number');
       return;
     }
-    
+
     setError('');
     setIsSearching(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      // Mock data for demonstration
-      if (caseNumber === 'CS12345') {
-        setCaseStatus({
-          caseNumber: 'CS12345',
-          category: 'Financial Fraud',
-          dateTime: '2023-06-15 10:30 AM',
-          firCopy: 'FIR_CS12345.pdf',
-          briefing: 'Unauthorized transaction of ₹25,000 from credit card on June 15, 2023.',
-          status: 'In Progress',
-          comments: 'Investigation ongoing. Bank statements being verified. Will contact you for more details soon.'
-        });
-        toast.success('Case found!');
-      } else {
-        setCaseStatus(null);
-        toast.error('No case found with that number');
+
+    try {
+      const res = await getComplainById({ complainId: caseNumber })
+      console.log(res)
+      if (res?.success) {
+        setIsSearching(false)
+        toast.success("Successfully fetched the complain record!")
+        setCaseStatus(res?.complain)
       }
-      
+    } catch (error: any) {
+      toast.error("Error finding the case details")
       setIsSearching(false);
-    }, 1500);
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   return (
@@ -86,7 +81,7 @@ const CaseStatus = () => {
             <p className="text-gray-600 mb-6">
               Enter your case number to track the current status of your complaint.
             </p>
-            
+
             <form onSubmit={handleSearch} className="space-y-6 max-w-xl mx-auto">
               <div className="space-y-2">
                 <Label htmlFor="caseNumber">
@@ -105,7 +100,7 @@ const CaseStatus = () => {
                 {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
                 <p className="text-xs text-gray-500">Demo: Try searching for "CS12345"</p>
               </div>
-              
+
               <div className="flex justify-center">
                 <Button type="submit" disabled={isSearching}>
                   <Search className="mr-2 h-4 w-4" />
@@ -127,7 +122,7 @@ const CaseStatus = () => {
             <h2 className="text-xl md:text-2xl font-bold text-cyber-dark-blue mb-4">
               Case Details
             </h2>
-            
+
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
@@ -142,21 +137,21 @@ const CaseStatus = () => {
                       <FileText className="mr-2 h-4 w-4 text-cyber-blue" />
                       Case Number
                     </TableCell>
-                    <TableCell>{caseStatus.caseNumber}</TableCell>
+                    <TableCell>{caseStatus?.complainId}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-medium flex items-center">
                       <Tag className="mr-2 h-4 w-4 text-cyber-blue" />
                       Case Category
                     </TableCell>
-                    <TableCell>{caseStatus.category}</TableCell>
+                    <TableCell>{caseStatus?.category}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-medium flex items-center">
                       <Clock className="mr-2 h-4 w-4 text-cyber-blue" />
                       Date/Time
                     </TableCell>
-                    <TableCell>{caseStatus.dateTime}</TableCell>
+                    <TableCell>{caseStatus?.approxDate}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-medium flex items-center">
@@ -164,18 +159,35 @@ const CaseStatus = () => {
                       FIR Uploaded Copy
                     </TableCell>
                     <TableCell>
-                      <Button variant="outline" size="sm">
+                      <Button onClick={
+                        () => window.open(caseStatus?.firUrl, '_blank')
+                      } variant="outline" size="sm">
                         <Download className="mr-2 h-4 w-4" />
                         Download
                       </Button>
                     </TableCell>
                   </TableRow>
+                  {caseStatus?.supportingDocUrl &&
+                    <TableRow>
+                      <TableCell className="font-medium flex items-center">
+                        <FileText className="mr-2 h-4 w-4 text-cyber-blue" />
+                        Supporting Files
+                      </TableCell>
+                      <TableCell>
+                        <Button onClick={
+                          () => window.open(caseStatus?.supportingDocUrl, '_blank')
+                        } variant="outline" size="sm">
+                          <Download className="mr-2 h-4 w-4" />
+                          Download
+                        </Button>
+                      </TableCell>
+                    </TableRow>}
                   <TableRow>
                     <TableCell className="font-medium flex items-center">
                       <FileText className="mr-2 h-4 w-4 text-cyber-blue" />
                       Case Briefing
                     </TableCell>
-                    <TableCell>{caseStatus.briefing}</TableCell>
+                    <TableCell>{caseStatus?.description}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-medium flex items-center">
@@ -193,7 +205,7 @@ const CaseStatus = () => {
                       <MessageCircle className="mr-2 h-4 w-4 text-cyber-blue" />
                       Admin Comments
                     </TableCell>
-                    <TableCell>{caseStatus.comments}</TableCell>
+                    <TableCell>{caseStatus.comment ?? "No comments"}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

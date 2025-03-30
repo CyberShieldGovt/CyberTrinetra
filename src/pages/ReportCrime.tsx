@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from 'sonner';
+import { uploadComplain } from '@/services';
 
 const ReportCrime = () => {
   const [category, setCategory] = useState('');
@@ -50,20 +51,29 @@ const ReportCrime = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
     
     if (validateForm()) {
       setIsSubmitting(true);
-      
-      // Simulate form submission
-      setTimeout(() => {
-        toast.success('Your case has been successfully submitted!');
-        navigate('/dashboard');
-        setIsSubmitting(false);
-      }, 1500);
-    }
-  };
+      const complainData = {
+        complain: firFile,
+        extraDoc: supportingFile,
+        category: category,
+        approxDate: dateTime,
+        description: description
+      }
+
+      const res = await uploadComplain(complainData);
+      if(res?.success){
+        toast.success("Complain filed successfully!");
+        setIsSubmitting(false)
+      }else{
+        toast.success("Error filing complain!")
+        setIsSubmitting(false)
+      }
+  }
+}
 
   return (
     <div className="min-h-screen bg-cyber-light-gray py-12">

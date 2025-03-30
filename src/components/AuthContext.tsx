@@ -1,7 +1,9 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
+import { loginUser, registerUser } from '@/services';
 
 type User = {
   id: string;
@@ -9,6 +11,7 @@ type User = {
   email: string;
   isAdmin?: boolean;
   mobile?: string;
+  exp?: number; // Expiry time of the token
 } | null;
 
 type AuthContextType = {
@@ -28,58 +31,92 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  console.log("deoc", user )
 
   useEffect(() => {
-    // Check if user data exists in localStorage
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decoded: any = jwtDecode(token);
+        if (decoded.exp && decoded.exp * 1000 < Date.now()) {
+          // Token has expired
+          localStorage.removeItem('token');
+          localStorage.removeItem('isAdmin');
+          setUser(null);
+          toast.error('Session expired. Please log in again.');
+        }
+      } catch (error) {
+        console.error('Token decoding error:', error);
+        localStorage.removeItem('token');
+        localStorage.removeItem('isAdmin');
+        setUser(null);
+      }
     }
     setLoading(false);
   }, []);
 
-  // Mock login function
   const login = async (email: string, password: string) => {
     setLoading(true);
-    
     try {
-      // This is a mock login - in a real app this would call an API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // For demo: Admin login with admin@cybertrinetri.com
-      const isAdmin = email.toLowerCase() === 'admin@cybertrinetri.com';
-      
-      const userData = {
-        id: '123456',
-        name: isAdmin ? 'Admin User' : 'Test User',
-        email: email,
-        isAdmin: isAdmin,
-        mobile: '9876543210' // Adding a default mobile number
-      };
-      
-      setUser(userData);
-      localStorage.setItem('user', JSON.stringify(userData));
-      
-      toast.success('Logged in successfully!');
-      navigate(isAdmin ? '/admin' : '/dashboard');
+      const res = await loginUser({ email, password });
+      if (res?.success) {
+        const user = res?.user?.user;
+        const isAdmin = user?.role?.toLowerCase() === 'admin';
+        const userData = {
+          id: user?._id,
+          name: user?.name,
+          email: user?.email,
+          isAdmin: isAdmin,
+          mobile: user?.phone,
+          token: res?.user?.token
+        };
+        const token = res?.user?.token;
+        setUser(userData);
+        localStorage.setItem('token', token);
+        localStorage.setItem('isAdmin', isAdmin.toString());
+        toast.success('Logged in successfully!');
+        navigate(isAdmin ? '/admin' : '/dashboard');
+      }
     } catch (error) {
       console.error('Login error:', error);
       toast.error('Login failed. Please check your credentials.');
     } finally {
+      toast.error('Login failed. Please check your credentials.');
       setLoading(false);
     }
   };
-  
-  // Mock register function
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('isAdmin');
+    toast.info('Logged out successfully');
+    navigate('/');
+  };
+
   const register = async (name: string, email: string, mobile: string, password: string) => {
     setLoading(true);
-    
     try {
-      // This is a mock registration - in a real app this would call an API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast.success('Registration successful! Please log in.');
-      navigate('/login');
+      const res = await registerUser({ name, email, mobile, password });
+      if (res?.success && res?.user?.newUser) { // Ensure res.user.newUser exists
+        const user = res.user.newUser;
+        const isAdmin = user?.role?.toLowerCase() === 'admin';
+        const userData = {
+          id: user?._id,
+          name: user?.name,
+          email: user?.email,
+          isAdmin: isAdmin,
+          mobile: user?.phone,
+          token: res?.user?.token,
+        };
+        setUser(userData);
+        localStorage.setItem('token', res?.user?.token);
+        localStorage.setItem('isAdmin', isAdmin?.toString());
+        toast.success('Registration is successfully done!');
+        navigate(isAdmin ? '/admin' : '/dashboard');
+      } else {
+        toast.error('Registration failed. Please try again.');
+      }
     } catch (error) {
       console.error('Registration error:', error);
       toast.error('Registration failed. Please try again.');
@@ -87,21 +124,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     }
   };
-  
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-    toast.info('Logged out successfully');
-    navigate('/');
-  };
-  
+
   const forgotPassword = async (email: string) => {
     setLoading(true);
-    
     try {
-      // This is a mock password reset - in a real app this would call an API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       toast.success('Password reset link sent to your email!');
       navigate('/login');
     } catch (error) {
@@ -112,16 +139,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const isAuthenticated = !!user;
-  const isAdmin = !!user?.isAdmin;
+  const isAuthenticated = !!localStorage.getItem('token');
+  const isAdmin = localStorage.getItem('isAdmin') === 'true';
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      loading, 
-      login, 
-      register, 
-      logout, 
+    <AuthContext.Provider value={{
+      user,
+      loading,
+      login,
+      register,
+      logout,
       forgotPassword,
       isAuthenticated,
       isAdmin

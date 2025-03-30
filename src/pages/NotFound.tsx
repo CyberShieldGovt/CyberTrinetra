@@ -43,7 +43,7 @@ const NotFound = () => {
         </p>
         
         <Link to="/">
-          <Button className="flex items-center">
+          <Button className="flex items-center justify-center">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Return to Home
           </Button>

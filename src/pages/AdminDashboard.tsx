@@ -1,14 +1,34 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { FileText, CheckCircle2, Upload, Edit, BarChart2, Users, AlertCircle, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/components/AuthContext';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { getAdminAnalytics } from '@/services';
+
+export const formatDate = (dateString: string | Date): string => {
+  const date = new Date(dateString);
+  
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  
+  let hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  
+  hours = hours % 12;
+  hours = hours ? hours : 12; // Convert 0 to 12 for 12 AM
+  const formattedHours = hours.toString().padStart(2, '0');
+  
+  return `${day}/${month}/${year} ${formattedHours}:${minutes} ${ampm}`;
+};
 
 const AdminDashboard = () => {
   const { isAuthenticated, isAdmin } = useAuth();
+  const [cases, setCases] = useState()
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -18,6 +38,17 @@ const AdminDashboard = () => {
   if (!isAuthenticated || !isAdmin) {
     return <Navigate to="/login" />;
   }
+
+  const getAllComplains = async()=>{
+      const res = await getAdminAnalytics()
+      if(res?.success){
+        setCases(res?.admin)
+      }
+    }
+    useEffect(()=>{
+      getAllComplains()
+    },[])
+    console.log("casews", cases)
 
   const dashboardItems = [
     {
@@ -56,9 +87,9 @@ const AdminDashboard = () => {
   
   // Mock statistics data
   const statsData = [
-    { title: 'Total Cases', value: '342', icon: <FileText className="h-5 w-5" />, change: '+12% from last month' },
-    { title: 'Resolved Cases', value: '275', icon: <CheckCircle2 className="h-5 w-5" />, change: '+8% from last month' },
-    { title: 'Total Users', value: '1,254', icon: <Users className="h-5 w-5" />, change: '+15% from last month' },
+    { title: 'Total Cases', value: cases?.totalCases??0, icon: <FileText className="h-5 w-5" />, change: `${cases?.percentageOfTotalCasesLastMonth} from last month` },
+    { title: 'Resolved Cases', value: cases?.totalResolvedCases, icon: <CheckCircle2 className="h-5 w-5" />, change: `${cases?.percentageOfTotalCasesLastMonth} from last month` },
+    { title: 'Total Users', value: cases?.totalUsers, icon: <Users className="h-5 w-5" />, change: `${cases?.percentageOfTotalCasesLastMonth} from last month` },
     { title: 'Pending Facts', value: '27', icon: <Clock className="h-5 w-5" />, change: '-3% from last month' }
   ];
 

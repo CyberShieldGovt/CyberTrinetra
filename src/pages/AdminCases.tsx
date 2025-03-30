@@ -33,74 +33,76 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { getAdminComplains, updateAdminComplains } from '@/services';
+import { formatDate } from './AdminDashboard';
 
 // Sample case data
-const casesData = [
-  {
-    id: 'CS12345',
-    category: 'Financial Fraud',
-    dateTime: '2023-06-15 10:30 AM',
-    firCopy: 'FIR_CS12345.pdf',
-    briefing: 'Unauthorized transaction of ₹25,000 from credit card on June 15, 2023.',
-    status: 'In Progress',
-    comments: 'Investigation ongoing. Bank statements being verified. Will contact you for more details soon.'
-  },
-  {
-    id: 'CS12346',
-    category: 'Women & Child',
-    dateTime: '2023-06-14 11:45 AM',
-    firCopy: 'FIR_CS12346.pdf',
-    briefing: 'Online harassment case involving threatening messages on social media platform.',
-    status: 'New',
-    comments: ''
-  },
-  {
-    id: 'CS12347',
-    category: 'Other Cyber Crime',
-    dateTime: '2023-06-13 09:15 AM',
-    firCopy: 'FIR_CS12347.pdf',
-    briefing: 'Website hacking attempt on company portal resulting in temporary downtime.',
-    status: 'Resolved',
-    comments: 'Perpetrator identified. Legal proceedings initiated. Security patches implemented.'
-  },
-  {
-    id: 'CS12348',
-    category: 'Financial Fraud',
-    dateTime: '2023-06-12 03:20 PM',
-    firCopy: 'FIR_CS12348.pdf',
-    briefing: 'Phishing email leading to fraudulent transaction of ₹15,000.',
-    status: 'In Progress',
-    comments: 'Email traced. Working with bank to reverse transaction.'
-  },
-  {
-    id: 'CS12349',
-    category: 'Women & Child',
-    dateTime: '2023-06-11 12:10 PM',
-    firCopy: 'FIR_CS12349.pdf',
-    briefing: 'Cyberbullying case involving a minor on educational platform.',
-    status: 'New',
-    comments: ''
-  },
-  {
-    id: 'CS12350',
-    category: 'Other Cyber Crime',
-    dateTime: '2023-06-10 02:35 PM',
-    firCopy: 'FIR_CS12350.pdf',
-    briefing: 'Ransomware attack on local business encrypting important files.',
-    status: 'Rejected',
-    comments: 'Case jurisdiction falls under specialized cyber cell. Redirected appropriately.'
-  }
-];
+// const casesData = [
+//   {
+//     id: 'CS12345',
+//     category: 'Financial Fraud',
+//     dateTime: '2023-06-15 10:30 AM',
+//     firCopy: 'FIR_CS12345.pdf',
+//     briefing: 'Unauthorized transaction of ₹25,000 from credit card on June 15, 2023.',
+//     status: 'In Progress',
+//     comments: 'Investigation ongoing. Bank statements being verified. Will contact you for more details soon.'
+//   },
+//   {
+//     id: 'CS12346',
+//     category: 'Women & Child',
+//     dateTime: '2023-06-14 11:45 AM',
+//     firCopy: 'FIR_CS12346.pdf',
+//     briefing: 'Online harassment case involving threatening messages on social media platform.',
+//     status: 'New',
+//     comments: ''
+//   },
+//   {
+//     id: 'CS12347',
+//     category: 'Other Cyber Crime',
+//     dateTime: '2023-06-13 09:15 AM',
+//     firCopy: 'FIR_CS12347.pdf',
+//     briefing: 'Website hacking attempt on company portal resulting in temporary downtime.',
+//     status: 'Resolved',
+//     comments: 'Perpetrator identified. Legal proceedings initiated. Security patches implemented.'
+//   },
+//   {
+//     id: 'CS12348',
+//     category: 'Financial Fraud',
+//     dateTime: '2023-06-12 03:20 PM',
+//     firCopy: 'FIR_CS12348.pdf',
+//     briefing: 'Phishing email leading to fraudulent transaction of ₹15,000.',
+//     status: 'In Progress',
+//     comments: 'Email traced. Working with bank to reverse transaction.'
+//   },
+//   {
+//     id: 'CS12349',
+//     category: 'Women & Child',
+//     dateTime: '2023-06-11 12:10 PM',
+//     firCopy: 'FIR_CS12349.pdf',
+//     briefing: 'Cyberbullying case involving a minor on educational platform.',
+//     status: 'New',
+//     comments: ''
+//   },
+//   {
+//     id: 'CS12350',
+//     category: 'Other Cyber Crime',
+//     dateTime: '2023-06-10 02:35 PM',
+//     firCopy: 'FIR_CS12350.pdf',
+//     briefing: 'Ransomware attack on local business encrypting important files.',
+//     status: 'Rejected',
+//     comments: 'Case jurisdiction falls under specialized cyber cell. Redirected appropriately.'
+//   }
+// ];
 
-type Case = typeof casesData[0];
+// type Case = typeof casesData[0];
 
 const AdminCases = () => {
-  const [cases, setCases] = useState<Case[]>(casesData);
-  const [filteredCases, setFilteredCases] = useState<Case[]>(casesData);
+  const [cases, setCases] = useState<any>();
+  const [filteredCases, setFilteredCases] = useState<any>();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [selectedCase, setSelectedCase] = useState<Case | null>(null);
+  const [selectedCase, setSelectedCase] = useState<any | null>(null);
   const [updateStatus, setUpdateStatus] = useState('');
   const [comments, setComments] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -116,63 +118,49 @@ const AdminCases = () => {
     return <Navigate to="/login" />;
   }
 
-  // Filter cases based on search term and filters
-  useEffect(() => {
-    let result = [...cases];
-    
-    // Apply search filter
-    if (searchTerm) {
-      result = result.filter(
-        c => 
-          c.id.toLowerCase().includes(searchTerm.toLowerCase()) || 
-          c.briefing.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  const getAllComplains = async()=>{
+    const res = await getAdminComplains({complainId: searchTerm, status: statusFilter, category: categoryFilter})
+    if(res?.success){
+      setCases(res?.admin)
+      setFilteredCases(res?.admin)
     }
-    
-    // Apply category filter
-    if (categoryFilter !== 'all') {
-      result = result.filter(c => c.category === categoryFilter);
-    }
-    
-    // Apply status filter
-    if (statusFilter !== 'all') {
-      result = result.filter(c => c.status === statusFilter);
-    }
-    
-    setFilteredCases(result);
-  }, [searchTerm, categoryFilter, statusFilter, cases]);
+  }
+  useEffect(()=>{
+    getAllComplains()
+  },[])
 
-  const handleCaseSelect = (caseItem: Case) => {
+  useEffect(()=>{
+    getAllComplains()
+  },[statusFilter, categoryFilter, searchTerm])
+
+  // Filter cases based on search term and filters
+
+  const handleCaseSelect = (caseItem) => {
     setSelectedCase(caseItem);
-    setUpdateStatus(caseItem.status);
-    setComments(caseItem.comments);
+    setUpdateStatus(caseItem?.status);
+    setComments(caseItem?.comment);
   };
 
-  const handleUpdateCase = () => {
+  const handleUpdateCase = async() => {
     if (!selectedCase) return;
     
     setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      // Update the case in the state
-      const updatedCases = cases.map(c => 
-        c.id === selectedCase.id 
-          ? { ...c, status: updateStatus, comments: comments }
-          : c
-      );
-      
-      setCases(updatedCases);
+    const res = await updateAdminComplains({complainId:selectedCase?.complainId, comment:comments, status: updateStatus})
+    console.log("rsrs", res)
+    if(res?.success){
+      setCases(res?.admin);
       setSelectedCase(null);
       setIsSubmitting(false);
+      getAllComplains()
       toast.success('Case updated successfully!');
-    }, 1000);
+    }
   };
 
+  console.log("gdgd", selectedCase)
   // Status badge color mapping
   const statusColors = {
     'New': 'bg-blue-100 text-blue-800',
-    'In Progress': 'bg-yellow-100 text-yellow-800',
+    'InProgress': 'bg-yellow-100 text-yellow-800',
     'Resolved': 'bg-green-100 text-green-800',
     'Rejected': 'bg-red-100 text-red-800'
   };
@@ -225,9 +213,9 @@ const AdminCases = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Categories</SelectItem>
-                    <SelectItem value="Financial Fraud">Financial Fraud</SelectItem>
-                    <SelectItem value="Women & Child">Women & Child</SelectItem>
-                    <SelectItem value="Other Cyber Crime">Other Cyber Crime</SelectItem>
+                    <SelectItem value="financial">Financial Fraud</SelectItem>
+                    <SelectItem value="Women-Child">Women & Child</SelectItem>
+                    <SelectItem value="Other">Other Cyber Crime</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -263,13 +251,13 @@ const AdminCases = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredCases.length > 0 ? (
-                    filteredCases.map((caseItem) => (
-                      <TableRow key={caseItem.id}>
-                        <TableCell className="font-medium">{caseItem.id}</TableCell>
-                        <TableCell>{caseItem.category}</TableCell>
-                        <TableCell>{caseItem.dateTime}</TableCell>
-                        <TableCell className="max-w-xs truncate">{caseItem.briefing}</TableCell>
+                  {filteredCases?.length > 0 ? (
+                    filteredCases?.map((caseItem) => (
+                      <TableRow key={caseItem?.complainId}>
+                        <TableCell className="font-medium">{caseItem?.complainId}</TableCell>
+                        <TableCell>{caseItem?.category}</TableCell>
+                        <TableCell>{formatDate(caseItem?.approxDate)}</TableCell>
+                        <TableCell className="max-w-xs truncate">{caseItem?.description}</TableCell>
                         <TableCell>
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                             statusColors[caseItem.status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800'
@@ -290,7 +278,7 @@ const AdminCases = () => {
                             </DialogTrigger>
                             <DialogContent className="max-w-2xl">
                               <DialogHeader>
-                                <DialogTitle>Case Details: {selectedCase?.id}</DialogTitle>
+                                <DialogTitle>Case Details: {selectedCase?.complainId}</DialogTitle>
                                 <DialogDescription>
                                   Review and update the status of this case.
                                 </DialogDescription>
@@ -301,23 +289,25 @@ const AdminCases = () => {
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                       <Label className="text-sm text-gray-500">Category</Label>
-                                      <p className="font-medium">{selectedCase.category}</p>
+                                      <p className="font-medium">{selectedCase?.category}</p>
                                     </div>
                                     <div>
                                       <Label className="text-sm text-gray-500">Date/Time</Label>
-                                      <p className="font-medium">{selectedCase.dateTime}</p>
+                                      <p className="font-medium">{selectedCase?.approxDate}</p>
                                     </div>
                                   </div>
                                   
                                   <div>
                                     <Label className="text-sm text-gray-500">Case Briefing</Label>
-                                    <p className="font-medium">{selectedCase.briefing}</p>
+                                    <p className="font-medium">{selectedCase?.description}</p>
                                   </div>
                                   
                                   <div>
                                     <Label className="text-sm text-gray-500">FIR Document</Label>
                                     <div className="mt-1">
-                                      <Button variant="outline" size="sm">
+                                      <Button onClick={
+                          () => window.open(selectedCase?.firUrl, '_blank')
+                        } variant="outline" size="sm">
                                         <Download className="mr-2 h-4 w-4" />
                                         Download FIR
                                       </Button>

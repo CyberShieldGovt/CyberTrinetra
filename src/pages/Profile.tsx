@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from 'sonner';
+import { getUserById, updateUserById } from '@/services';
 
 const Profile = () => {
   const { user, isAuthenticated } = useAuth();
@@ -18,31 +19,53 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    
-    // Initialize form with user data
-    if (user) {
-      setName(user.name || '');
-      setEmail(user.email || '');
-      setMobile(user.mobile || '9876543210'); // Default for demo
+  const fetchUser = async()=>{
+    const res = await getUserById()
+    if(res?.success){
+      const user = res?.user
+      setName(user?.name)
+      setEmail(user?.email)
+      setMobile(user?.phone)
     }
-  }, [user]);
+    else{
+      toast.error("Error fetching user details!")
+    }
+  }
+  useEffect(()=>{
+    fetchUser()
+  },[])
 
-  // Redirect if not authenticated
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+    
+  //   // Initialize form with user data
+  //   if (user) {
+  //     setName(user.name || '');
+  //     setEmail(user.email || '');
+  //     setMobile(user.mobile || '9876543210'); // Default for demo
+  //   }
+  // }, [user]);
+
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
 
-  const handleSave = () => {
-    setIsSaving(true);
-    
-    // Simulate API call to update profile
-    setTimeout(() => {
-      toast.success('Profile updated successfully');
-      setIsEditing(false);
-      setIsSaving(false);
-    }, 1000);
+  const handleSave = async() => {
+    setIsSaving(true)
+    try{
+      const res = await updateUserById({name, email, phone:mobile})
+      if(res?.success){
+        toast.success("Successfully updated data!")
+        setIsSaving(false)
+        setIsEditing(false)
+        fetchUser()
+      }
+    }catch(error: any){
+      setIsSaving(false)
+      toast.error("Error updating data!")
+    }finally{
+      setIsSaving(false)
+    }
   };
 
   return (
