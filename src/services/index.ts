@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { toast } from "sonner";
 
-const BASE_URL = "http://localhost:5000/api/v1/"
+const BASE_URL = "https://cybershield-backend.onrender.com/api/v1/"
 
 export const loginUser = async ({ email, password }: { email: string; password: string }): Promise<{
     user: any;
