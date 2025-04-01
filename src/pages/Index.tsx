@@ -59,6 +59,12 @@ const Index = () => {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
                 CyberTrinetra - Your Guardian Against Digital Threats
               </h1>
+              {/* Added highlighted safety message */}
+              <div className="bg-cyber-blue/20 border-l-4 border-cyber-blue p-4 my-6 rounded-r">
+                <p className="text-xl md:text-2xl font-semibold text-white animate-pulse">
+                  Every Girl's Safety is Our Responsibility
+                </p>
+              </div>
               <p className="text-lg text-gray-200 mb-8 max-w-lg">
                 At CyberTrinetra, we are dedicated to empowering individuals in the fight against cybercrimes. Our secure platform helps you report and track cybercrimes with transparency and swift resolution.
               </p>
@@ -86,7 +92,7 @@ const Index = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className={isMobile ? "mt-8" : "hidden lg:block"}
+              className={`${isMobile ? "mt-8" : "hidden lg:block"}`}
             >
               <div className="relative">
                 <div className="absolute -inset-4 bg-cyber-blue/20 rounded-full blur-xl animate-pulse-glow"></div>
