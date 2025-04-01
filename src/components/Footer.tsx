@@ -89,8 +89,22 @@ const Footer = () => {
               <p className="mb-2">Bengaluru, Karnataka</p>
               <p className="mb-2">India</p>
               <p className="mb-2">Phone: +91 9876543210</p>
-              <p>Email: support@cybertrinetri.com</p>
+              <p>Email: support@cybertrinetra.com</p>
             </address>
+          </div>
+        </div>
+       
+        {/* Added disclaimer section */}
+        <div className="border-t border-gray-700 mt-8 pt-6 text-gray-400 text-sm">
+          <div className="bg-cyber-navy/50 p-4 rounded-lg">
+            <h4 className="font-semibold text-gray-300 mb-2">Disclaimer</h4>
+            <p className="mb-2">
+             CyberTrinetra is a platform for reporting and tracking cyber crimes. We do not provide legal services or guarantee case resolutions. Cases related to women and children are free, with optional donations, while others may have service charges upon resolution.
+            </p>
+            <p>
+              CyberTrinetra is not a substitute for professional legal advice or law enforcement. In case of 
+              emergencies or immediate threats, please contact your local law enforcement agencies directly.
+            </p>
           </div>
         </div>
         
