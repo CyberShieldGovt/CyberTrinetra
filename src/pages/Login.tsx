@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,Navigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/components/AuthContext';
@@ -32,7 +32,14 @@ const Login = () => {
     
     if (validateForm()) {
       try {
-        await login(email, password);
+        const response = await login(email, password);
+          if (response?.status === 200) {
+        // Successful login: Redirect user
+        navigate('/dashboard'); 
+          }
+          else {
+             setErrors({ general: 'Invalid credentials' });
+          }
       } catch (error) {
         console.error('Login error:', error);
       }
