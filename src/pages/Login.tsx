@@ -115,13 +115,6 @@ const Login = () => {
             </p>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-gray-200">
-            <div className="text-sm text-gray-500 text-center">
-              <p className="mb-2">Demo Accounts:</p>
-              <p>Regular User: user@example.com / password</p>
-              <p>Admin User: admin@cybertrinetri.com / password</p>
-            </div>
-          </div>
         </motion.div>
       </div>
     </div>
