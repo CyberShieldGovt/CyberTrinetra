@@ -95,7 +95,7 @@ const Support = () => {
                   </div>
                   <div className="ml-4">
                     <h3 className="text-lg font-semibold text-cyber-dark-blue">Email</h3>
-                    <p className="text-gray-600">support@cybertrinetri.com</p>
+                    <p className="text-gray-600">support@cybertrinetra.com</p>
                     <p className="text-sm text-gray-500">We respond within 24 hours</p>
                   </div>
                 </div>
@@ -107,10 +107,9 @@ const Support = () => {
                   <div className="ml-4">
                     <h3 className="text-lg font-semibold text-cyber-dark-blue">Address</h3>
                     <p className="text-gray-600">
-                      Pooja Arcade, 2nd Floor<br />
-                      Kammanahalli, Kalyan Nagar<br />
-                      Bengaluru, Karnataka<br />
-                      India
+                      K R Puram, Bengalore<br />
+                      India<br />
+                      560036
                     </p>
                   </div>
                 </div>
@@ -242,7 +241,7 @@ const Support = () => {
               {[
                 {
                   question: 'How long does it take to process a cybercrime complaint?',
-                  answer: 'Processing times vary depending on the complexity of the case. Simple cases may be resolved within 2-3 weeks, while more complex cases involving financial fraud or multiple parties may take 4-8 weeks.'
+                  answer: 'Processing times vary depending on the complexity of the case. Simple cases may be resolved within 2-3 Days, while more complex cases involving financial fraud or multiple parties may take 6-8 Days.'
                 },
                 {
                   question: 'Is my personal information secure when I submit a case?',
