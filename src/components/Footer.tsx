@@ -84,17 +84,16 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Contact</h3>
             <address className="not-italic text-gray-300">
-              <p className="mb-2">Pooja Arcade, 2nd Floor</p>
-              <p className="mb-2">Kammanahalli, Kalyan Nagar</p>
-              <p className="mb-2">Bengaluru, Karnataka</p>
-              <p className="mb-2">India</p>
+              <p className="mb-2">K R Puram , Bengalore</p>
+              <p className="mb-2">Karnataka</p>
+              <p className="mb-2">India-560036</p>
               <p className="mb-2">Phone: +91 9876543210</p>
               <p>Email: support@cybertrinetra.com</p>
             </address>
           </div>
         </div>
        
-        {/* Added disclaimer section */}
+        {/* Added disclaimer section */} 
         <div className="border-t border-gray-700 mt-8 pt-6 text-gray-400 text-sm">
           <div className="bg-cyber-navy/50 p-4 rounded-lg">
             <h4 className="font-semibold text-gray-300 mb-2">Disclaimer</h4>
