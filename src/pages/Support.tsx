@@ -108,8 +108,7 @@ const Support = () => {
                     <h3 className="text-lg font-semibold text-cyber-dark-blue">Address</h3>
                     <p className="text-gray-600">
                       K R Puram, Bengalore<br />
-                      India<br />
-                      560036
+                      India-560036
                     </p>
                   </div>
                 </div>
