@@ -3,7 +3,7 @@ import { toast } from "sonner";
 
 //modified the base url
 //const BASE_URL = "https://cybershield-backend.onrender.com/api/v1/"
-const BASE_URL = "https://13.232.236.75:5000/api/v1/"
+const BASE_URL = "http://13.232.236.75:5000/api/v1/"
 
 export const loginUser = async ({ email, password }: { email: string; password: string }): Promise<{
     user: any;
