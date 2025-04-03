@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -12,48 +11,48 @@ const blogPosts = [
     title: 'How to Protect Yourself from Phishing Attacks',
     excerpt: 'Learn the common signs of phishing attempts and strategies to keep your personal information safe from cybercriminals.',
     coverImage: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    date: 'June 15, 2023',
+    date: 'March 15, 2025',
     author: 'Cyber Expert'
   },
   {
     id: '2',
-    title: 'Understanding Ransomware: Prevention and Recovery',
-    excerpt: 'A comprehensive guide to ransomware attacks, how they work, and what steps you can take to protect your data and recover from an attack.',
-    coverImage: 'https://images.unsplash.com/photo-1510511459019-5dda7724fd87?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    date: 'May 22, 2023',
+    title: 'Digital Arrest Scam',
+    excerpt: 'Scammers impersonate law enforcement officials, using deepfake videos and fake arrest warrants to extort money from victims',
+    coverImage: '/Digital-Arrest-blog-image.jpg',
+    date: 'March 22, 2025',
     author: 'Security Analyst'
   },
   {
     id: '3',
-    title: 'The Rise of Financial Frauds: What You Need to Know',
-    excerpt: 'Explore the increasing trends in financial cybercrimes and learn how to identify and avoid becoming a victim of these sophisticated scams.',
-    coverImage: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    date: 'April 10, 2023',
+    title: 'Job Scam: Fake Government & IT Job Offers',
+    excerpt: 'Scammers exploit job seekers with fake job offers, demanding money for application fees and vanishing after payment.',
+    coverImage: '/jobs.jpg',
+    date: 'March 10, 2025',
     author: 'Financial Security Expert'
   },
   {
     id: '4',
     title: 'Protecting Children Online: A Parent\'s Guide',
     excerpt: 'Essential tips and tools for parents to help safeguard their children from online predators, cyberbullying, and inappropriate content.',
-    coverImage: 'https://images.unsplash.com/photo-1534437829740-62aafbb33587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    date: 'March 05, 2023',
-    author: 'Child Safety Advocate'
+    coverImage: '/kids-safety-online.png',
+    date: 'March 05, 2025',
+    author: 'Security Analyst'
   },
   {
     id: '5',
     title: 'The Importance of Two-Factor Authentication',
     excerpt: 'Why adding an extra layer of security with two-factor authentication is crucial in today\'s digital landscape and how to set it up on your accounts.',
     coverImage: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    date: 'February 18, 2023',
+    date: 'February 18, 2025',
     author: 'Cybersecurity Specialist'
   },
   {
     id: '6',
-    title: 'Identity Theft: Prevention and Recovery',
-    excerpt: 'A step-by-step guide on how to protect yourself from identity theft and what actions to take if you suspect your identity has been compromised.',
-    coverImage: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    date: 'January 30, 2023',
-    author: 'Identity Protection Expert'
+    title: 'Credit Card Scam: The "Police Will Arrest You" Threat',
+    excerpt: 'Fraudsters call or message claiming a large withdrawal was made from your credit card and demand immediate payment to avoid police action.',
+    coverImage: '/credit-card-fraud-in-india-717x404.jpg',
+    date: 'March 30, 2025',
+    author: 'Cybersecurity Expert'
   }
 ];
 
@@ -76,7 +75,12 @@ const Blogs = () => {
       );
       setFilteredBlogs(filtered);
     }
+    
+    // Debug: log current route
+    console.log("Current route:", window.location.pathname);
   }, [searchTerm]);
+
+  console.log("Blogs page loaded, available blog posts:", blogPosts.map(b => b.id));
 
   return (
     <div className="min-h-screen bg-cyber-light-gray py-12">
