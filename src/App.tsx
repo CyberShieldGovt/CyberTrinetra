@@ -26,6 +26,7 @@ import AdminCases from "./pages/AdminCases";
 import AdminFactChecker from "./pages/AdminFactChecker";
 import AdminGallery from "./pages/AdminGallery";
 import AdminBlogs from "./pages/AdminBlogs";
+import AdminUsers from "./pages/AdminUsers";
 import Profile from "./pages/Profile";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -67,6 +68,7 @@ const App = () => (
               <Route path="/admin/fact-checker" element={<AdminFactChecker />} />
               <Route path="/admin/gallery" element={<AdminGallery />} />
               <Route path="/admin/blogs" element={<AdminBlogs />} />
+              <Route path="/admin/users" element={<AdminUsers />} />
               
               {/* Catch-all route */}
               <Route path="*" element={<NotFound />} />
