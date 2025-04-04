@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Eye, EyeOff, User, Mail, Phone, Lock } from 'lucide-react';
+import { Eye, EyeOff, User, Mail, Phone, Lock, CheckCircle, Circle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/components/AuthContext';
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showChecklist, setShowChecklist] = useState(false);
   
   const { register, loading } = useAuth();
 
@@ -31,7 +32,6 @@ const Register = () => {
     else if (!/^\d{10}$/.test(mobile)) newErrors.mobile = 'Mobile number must be 10 digits';
     
     if (!password) newErrors.password = 'Password is required';
-    else if (password.length < 6) newErrors.password = 'Password must be at least 6 characters';
     
     if (password !== confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
     
@@ -50,6 +50,23 @@ const Register = () => {
       }
     }
   };
+
+   // Password validations
+  const validations = {
+    minLength: password.length >= 12,
+    hasUpper: /[A-Z]/.test(password),
+    hasNumber: /\d/.test(password),
+    hasSpecial: /[!@#$%^&*()\-_=+{}[\]:;"'<>,.?/]/.test(password),
+  };
+
+  const strength = Object.values(validations).filter(Boolean).length;
+
+  const renderCheck = (valid: boolean, label: string) => (
+    <li className={`flex items-center text-sm ${valid ? 'text-green-600 line-through' : 'text-gray-600'}`}>
+      {valid ? <CheckCircle className="w-4 h-4 mr-2" /> : <Circle className="w-4 h-4 mr-2" />}
+      {label}
+    </li>
+  );
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-cyber-light-gray py-12 px-4 sm:px-6 lg:px-8">
@@ -124,6 +141,8 @@ const Register = () => {
                   placeholder="Create a password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onFocus={() => setShowChecklist(true)}
+                  onBlur={() => password.length === 0 && setShowChecklist(false)}
                   className={`pl-10 ${errors.password ? 'border-red-500' : ''}`}
                 />
                 <button
@@ -135,6 +154,19 @@ const Register = () => {
                 </button>
               </div>
               {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+
+              {/* Live Password Checklist */}
+              {showChecklist && (
+                <ul className="mt-2 space-y-1 text-sm">
+                  {renderCheck(validations.minLength, 'At least 12 characters')}
+                  {renderCheck(validations.hasUpper, 'At least 1 capital letter')}
+                  {renderCheck(validations.hasSpecial, 'At least 1 special character')}
+                  {renderCheck(validations.hasNumber, 'At least 1 number')}
+                  <p className={`text-xs mt-2 font-medium ${strength < 2 ? 'text-red-500' : strength < 4 ? 'text-yellow-500' : 'text-green-600'}`}>
+                    Password strength: {strength < 2 ? 'Weak' : strength < 4 ? 'Moderate' : 'Strong'}
+                  </p>
+                </ul>
+              )}
             </div>
             
             <div className="space-y-2">
