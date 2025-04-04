@@ -82,7 +82,15 @@ const AdminDashboard = () => {
       link: '/admin/blogs',
       stats: '8 drafts',
       color: 'bg-yellow-50'
-    }
+    },
+    {
+       title: 'User Management',
+       description: 'View and manage system users',
+       icon: <Users className="h-10 w-10 text-red-500" />,
+       link: '/admin/users',
+       stats: '5 users',
+       color: 'bg-red-50'
+     }
   ];
   
   // Mock statistics data
@@ -126,7 +134,7 @@ const AdminDashboard = () => {
         </motion.div>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
           {statsData.map((stat, index) => (
             <motion.div
               key={index}
