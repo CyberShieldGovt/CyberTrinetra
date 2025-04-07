@@ -77,11 +77,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         toast.success('Logged in successfully!');
         navigate(isAdmin ? '/admin' : '/dashboard');
       }
+      else {
+        // If API response was not successful
+        toast.error('Login failed. Please check your credentials.');
+      }
     } catch (error) {
       console.error('Login error:', error);
       toast.error('Login failed. Please check your credentials.');
     } finally {
-      toast.error('Login failed. Please check your credentials.');
       setLoading(false);
     }
   };
