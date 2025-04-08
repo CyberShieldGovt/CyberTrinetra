@@ -109,6 +109,12 @@ const Footer = () => {
         
         <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
           <p>&copy; 2025 CyberTrinetra. All rights reserved.</p>
+          <p className="mt-2 text-xs text-gray-500">
+            <Link to="/admin-login" className="hover:text-gray-400 transition-colors duration-200">
+              CyberTrinetra
+            </Link>
+          </p>
+          <p className="mt-1 text-xs text-gray-500">Your Guardian against cyber threats</p>
         </div>
       </div>
     </footer>
