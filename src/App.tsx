@@ -21,6 +21,7 @@ import FactChecker from "./pages/FactChecker";
 import Blogs from "./pages/Blogs";
 import BlogPost from "./pages/BlogPost";
 import Support from "./pages/Support";
+import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminCases from "./pages/AdminCases";
 import AdminFactChecker from "./pages/AdminFactChecker";
@@ -65,6 +66,7 @@ const App = () => (
               <Route path="/verifyOtp" element={<ResetPassword />} />
               
               {/* Admin routes */}
+              <Route path="/admin-login" element={<AdminLogin />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/cases" element={<AdminCases />} />
               <Route path="/admin/fact-checker" element={<AdminFactChecker />} />
