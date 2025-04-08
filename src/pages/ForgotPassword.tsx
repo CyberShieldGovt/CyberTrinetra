@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowLeft } from 'lucide-react';
@@ -7,11 +6,15 @@ import { useAuth } from '@/components/AuthContext';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { sendOtp } from '@/services';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const { forgotPassword, loading } = useAuth();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -25,12 +28,19 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setIsLoading(true);
     if (validateForm()) {
       try {
-        await forgotPassword(email);
+        const res = await sendOtp({email});
+        if(res?.success) {
+          navigate("/verifyOtp", { state: { email } });
+          toast.success("Reset code has been sent to your email.");
+          setIsLoading(false);
+        }
       } catch (error) {
+        toast.error(error?.response?.data?.message || "An error occurred while sending the reset code.");
         console.error('Reset password error:', error);
+        setIsLoading(false);
       }
     }
   };
@@ -66,8 +76,8 @@ const ForgotPassword = () => {
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
             </div>
             
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Sending Reset Link...' : 'Reset Password'}
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? 'Sending Otp...' : 'Send Otp'}
             </Button>
           </form>
           

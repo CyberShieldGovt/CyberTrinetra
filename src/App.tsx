@@ -31,6 +31,7 @@ import Profile from "./pages/Profile";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Cancellation from "./pages/Cancellation";
+import ResetPassword from "./pages/ResetPassword";
 
 // Create QueryClient
 const queryClient = new QueryClient();
@@ -61,6 +62,7 @@ const App = () => (
               <Route path="/report-crime" element={<ReportCrime />} />
               <Route path="/case-status" element={<CaseStatus />} />
               <Route path="/fact-checker" element={<FactChecker />} />
+              <Route path="/verifyOtp" element={<ResetPassword />} />
               
               {/* Admin routes */}
               <Route path="/admin" element={<AdminDashboard />} />

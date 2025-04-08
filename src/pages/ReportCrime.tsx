@@ -54,25 +54,31 @@ const ReportCrime = () => {
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
     
-    if (validateForm()) {
-      setIsSubmitting(true);
-      const complainData = {
-        complain: firFile,
-        extraDoc: supportingFile,
-        category: category,
-        approxDate: dateTime,
-        description: description
+    try{
+        if (validateForm()) {
+          setIsSubmitting(true);
+          const complainData = {
+            complain: firFile,
+            extraDoc: supportingFile,
+            category: category,
+            approxDate: dateTime,
+            description: description
+          }
+    
+          const res = await uploadComplain(complainData);
+          if(res?.success){
+            toast.success(`Complain filed successfully with complain id ${res?.complain?.complainId}!`);
+            setIsSubmitting(false)
+          }else{
+            toast.success("Error filing complain!")
+            setIsSubmitting(false)
+          }
       }
-
-      const res = await uploadComplain(complainData);
-      if(res?.success){
-        toast.success("Complain filed successfully!");
-        setIsSubmitting(false)
-      }else{
-        toast.success("Error filing complain!")
-        setIsSubmitting(false)
-      }
-  }
+    }catch (error) {
+      toast.error("An error occurred while filing the complain.");
+      console.error('Error:', error);
+      setIsSubmitting(false);
+    }
 }
 
   return (

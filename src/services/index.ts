@@ -2,8 +2,8 @@ import axios, { AxiosResponse } from "axios";
 import { toast } from "sonner";
 
 //modified the base url
-//const BASE_URL = "https://cybershield-backend.onrender.com/api/v1/"
-const BASE_URL = "https://prod.cybertrinetra.com/api/v1/"
+const BASE_URL = "http://localhost:5000/api/v1/"
+// const BASE_URL = "https://prod.cybertrinetra.com/api/v1/"
 
 export const loginUser = async ({ email, password }: { email: string; password: string }): Promise<{
     user: any;
@@ -186,6 +186,37 @@ export const getAdminAnalytics = async () => {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
         });
+
+        return response.data;
+    } catch (error) {
+        console.error('Error getting user:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};
+
+export const sendOtp = async ({email}:{email: string}) => {
+    try {
+        const url = BASE_URL + `auth/send-otp`;        
+        const response: AxiosResponse<{
+            user: any;
+            success: any;
+        }> = await axios.post(url,{email});
+
+        return response.data;
+    } catch (error) {
+        console.error('Error getting user:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};
+
+export const forgetPassword = async ({email, password, otp}:{email: string, password: string, otp: number}) => {
+    try {
+        const url = BASE_URL + `auth/forget-password`;        
+        const response: AxiosResponse<{
+            user: any;
+            success: any;
+            message: string;
+        }> = await axios.post(url,{email, password, otp});
 
         return response.data;
     } catch (error) {
