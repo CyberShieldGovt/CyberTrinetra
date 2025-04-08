@@ -2,8 +2,8 @@ import axios, { AxiosResponse } from "axios";
 import { toast } from "sonner";
 
 //modified the base url
-const BASE_URL = "http://localhost:5000/api/v1/"
-// const BASE_URL = "https://prod.cybertrinetra.com/api/v1/"
+// const BASE_URL = "http://localhost:5000/api/v1/"
+const BASE_URL = "https://prod.cybertrinetra.com/api/v1/"
 
 export const loginUser = async ({ email, password }: { email: string; password: string }): Promise<{
     user: any;
