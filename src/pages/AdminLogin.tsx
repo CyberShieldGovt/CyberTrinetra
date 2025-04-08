@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Shield, Lock, User } from 'lucide-react';
+import { Mail, Shield, Lock, User,Eye, EyeOff  } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/components/AuthContext';
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,7 @@ const AdminLogin = () => {
   const [adminId, setAdminId] = useState('');
   const [otp, setOtp] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   
   // Authentication step states
   const [step, setStep] = useState(1); // 1: Admin ID, 2: OTP Verification, 3: Password
@@ -122,6 +123,10 @@ const AdminLogin = () => {
     } finally {
       setLoggingIn(false);
     }
+    };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(prev => !prev);
   };
 
   return (
@@ -247,12 +252,24 @@ const AdminLogin = () => {
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                     <Input
                       id="password"
-                      type="password"
+                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="pl-10"
+                      className="pl-10 pr-10"
                     />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
                   </div>
                 </div>
                 
