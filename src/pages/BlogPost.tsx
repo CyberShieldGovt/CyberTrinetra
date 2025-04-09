@@ -1,12 +1,11 @@
-
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CalendarDays, User, Clock, ChevronRight, ChevronLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { toast } from 'sonner';
+import ShareButton from '@/components/ShareButton';
 
-// Sample blog post data (same as in Blogs.tsx but with full content)
 const blogPosts = [
   {
     id: '1',
@@ -437,24 +436,32 @@ const BlogPost = () => {
             </div>
 
             {/* Post header */}
-            <div className="mb-8">
-              <h1 className="text-3xl md:text-4xl font-bold text-cyber-dark-blue mb-4">
-                {post.title}
-              </h1>
-
-              <div className="flex flex-wrap items-center text-sm text-gray-500 gap-4">
-                <div className="flex items-center">
-                  <User className="w-4 h-4 mr-1" />
-                  <span>{post.author}</span>
+             <div className="mb-8">
+              <div className="flex justify-between items-center mb-6">
+                <div>
+                  <h1 className="text-3xl md:text-4xl font-bold text-cyber-dark-blue mb-4">
+                    {post.title}
+                  </h1>
+                  
+                  <div className="flex flex-wrap items-center text-sm text-gray-500 gap-4">
+                    <div className="flex items-center">
+                      <User className="w-4 h-4 mr-1" />
+                      <span>{post.author}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <CalendarDays className="w-4 h-4 mr-1" />
+                      <span>{post.date}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Clock className="w-4 h-4 mr-1" />
+                      <span>{post.readTime}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <CalendarDays className="w-4 h-4 mr-1" />
-                  <span>{post.date}</span>
-                </div>
-                <div className="flex items-center">
-                  <Clock className="w-4 h-4 mr-1" />
-                  <span>{post.readTime}</span>
-                </div>
+                <ShareButton 
+                  url={window.location.href} 
+                  title={post.title || 'CyberTrinetra Blog Post'}
+                />
               </div>
             </div>
 
