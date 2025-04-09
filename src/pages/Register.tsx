@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Eye, EyeOff, User, Mail, Phone, Lock, CheckCircle, Circle, ArrowRight } from 'lucide-react';
+import { Eye, EyeOff, User, Mail, Phone, Lock, CheckCircle, Circle, ArrowRight, Check, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/components/AuthContext';
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { useToast } from '@/hooks/use-toast';
+import { Progress } from "@/components/ui/progress";
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -24,6 +25,7 @@ const Register = () => {
   const [otpVerified, setOtpVerified] = useState(false);
   const [sendingOtp, setSendingOtp] = useState(false);
   const [verifyingOtp, setVerifyingOtp] = useState(false);
+  const [step, setStep] = useState(1); // 1: Basic Info, 2: Email Verification, 3: Password Setup
   
   const { register, loading } = useAuth();
   const { toast } = useToast();
@@ -41,12 +43,13 @@ const Register = () => {
       return;
     }
 
-     setSendingOtp(true);
+    setSendingOtp(true);
     try {
       // In a real app, this would call an API endpoint to send OTP
       await new Promise(resolve => setTimeout(resolve, 1000));
       setOtpSent(true);
       setErrors(prev => ({ ...prev, email: '' }));
+      setStep(2); // Move to email verification step
       
       // Mock OTP sent success message
       toast({
@@ -74,6 +77,7 @@ const Register = () => {
       // For demo purpose, any 6-digit code is considered valid
       setOtpVerified(true);
       setErrors(prev => ({ ...prev, otp: '' }));
+      setStep(3); // Move to password setup step
       
       toast({
         title: "Email Verified",
@@ -118,7 +122,7 @@ const Register = () => {
     }
   };
 
-   // Password validations
+  // Password validations
   const validations = {
     minLength: password.length >= 12,
     hasUpper: /[A-Z]/.test(password),
@@ -133,6 +137,23 @@ const Register = () => {
       {valid ? <CheckCircle className="w-4 h-4 mr-2" /> : <Circle className="w-4 h-4 mr-2" />}
       {label}
     </li>
+  );
+  
+  const getProgressValue = () => {
+    if (step === 1) return 33;
+    if (step === 2) return otpVerified ? 66 : 33;
+    return 100;
+  };
+
+  const renderStepIndicator = () => (
+    <div className="mb-6">
+      <div className="flex justify-between mb-2">
+        <span className={`text-xs font-medium ${step >= 1 ? 'text-cyber-blue' : 'text-gray-400'}`}>Basic Info</span>
+        <span className={`text-xs font-medium ${step >= 2 ? 'text-cyber-blue' : 'text-gray-400'}`}>Email Verification</span>
+        <span className={`text-xs font-medium ${step >= 3 ? 'text-cyber-blue' : 'text-gray-400'}`}>Set Password</span>
+      </div>
+      <Progress value={getProgressValue()} className="h-2" />
+    </div>
   );
 
   return (
@@ -149,7 +170,10 @@ const Register = () => {
             <p className="text-gray-600">Join CyberTrinetra to report and track cyber crimes</p>
           </div>
           
+          {renderStepIndicator()}
+          
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Step 1: Basic Information */}
             <div className="space-y-2">
               <Label htmlFor="name">Full Name</Label>
               <div className="relative">
@@ -166,8 +190,11 @@ const Register = () => {
               {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
             </div>
             
-             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <Label htmlFor="email">Email Address</Label>
+                {otpVerified && <span className="text-xs flex items-center text-green-600"><Check className="w-3 h-3 mr-1" /> Verified</span>}
+              </div>
               <div className="flex items-center space-x-2">
                 <div className="relative flex-1">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
@@ -194,47 +221,61 @@ const Register = () => {
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
             </div>
 
+            {/* Step 2: Email Verification */}
             {otpSent && !otpVerified && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
-                className="space-y-2"
+                className="space-y-4 p-4 border border-dashed border-blue-300 rounded-lg bg-blue-50"
               >
-                <Label htmlFor="otp">Enter Verification Code</Label>
-                <div className="flex flex-col space-y-4">
-                  <InputOTP maxLength={6} value={otp} onChange={setOtp}>
-                    <InputOTPGroup>
-                      <InputOTPSlot index={0} />
-                      <InputOTPSlot index={1} />
-                      <InputOTPSlot index={2} />
-                      <InputOTPSlot index={3} />
-                      <InputOTPSlot index={4} />
-                      <InputOTPSlot index={5} />
-                    </InputOTPGroup>
-                  </InputOTP>
-                  <div className="flex justify-between items-center">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={sendOtp}
-                      disabled={sendingOtp}
-                    >
-                      Resend OTP
-                    </Button>
-                    <Button
-                      type="button"
-                      onClick={verifyOtp}
-                      disabled={otp.length !== 6 || verifyingOtp}
-                      size="sm"
-                      className="ml-2"
-                    >
-                      {verifyingOtp ? 'Verifying...' : 'Verify OTP'}
-                      {!verifyingOtp && <ArrowRight className="ml-2 h-4 w-4" />}
-                    </Button>
-                  </div>
+                <div className="flex items-center space-x-2 text-cyber-blue">
+                  <Mail className="h-5 w-5" />
+                  <h3 className="font-medium">Verify Your Email</h3>
                 </div>
-                {errors.otp && <p className="text-red-500 text-xs mt-1">{errors.otp}</p>}
+                
+                <p className="text-sm text-gray-600">
+                  Enter the 6-digit code sent to <span className="font-medium">{email}</span>
+                </p>
+                
+                <InputOTP maxLength={6} value={otp} onChange={setOtp}>
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+                
+                {errors.otp && (
+                  <div className="flex items-center text-red-500 text-xs">
+                    <AlertCircle className="h-3 w-3 mr-1" />
+                    {errors.otp}
+                  </div>
+                )}
+                
+                <div className="flex justify-between items-center">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={sendOtp}
+                    disabled={sendingOtp}
+                  >
+                    Resend OTP
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={verifyOtp}
+                    disabled={otp.length !== 6 || verifyingOtp}
+                    size="sm"
+                    className="ml-2"
+                  >
+                    {verifyingOtp ? 'Verifying...' : 'Verify Email'}
+                    {!verifyingOtp && <ArrowRight className="ml-2 h-4 w-4" />}
+                  </Button>
+                </div>
               </motion.div>
             )}
             
@@ -254,77 +295,100 @@ const Register = () => {
               {errors.mobile && <p className="text-red-500 text-xs mt-1">{errors.mobile}</p>}
             </div>
 
+            {/* Step 3: Password Setup */}
             {otpVerified && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="space-y-4"
+                className="space-y-4 mt-6"
               >
-              <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                <Input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="Create a password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onFocus={() => setShowChecklist(true)}
-                  onBlur={() => password.length === 0 && setShowChecklist(false)}
-                  className={`pl-10 ${errors.password ? 'border-red-500' : ''}`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                </button>
-              </div>
-              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+                <div className="p-3 bg-green-50 border border-green-200 rounded-lg mb-4">
+                  <div className="flex items-center text-green-700 mb-2">
+                    <CheckCircle className="h-5 w-5 mr-2" />
+                    <h3 className="font-medium">Email Verified Successfully</h3>
+                  </div>
+                  <p className="text-sm text-green-600">Please create a strong password to complete your registration.</p>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password</Label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="Create a password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      onFocus={() => setShowChecklist(true)}
+                      onBlur={() => password.length === 0 && setShowChecklist(false)}
+                      className={`pl-10 ${errors.password ? 'border-red-500' : ''}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
+                  </div>
+                  {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
 
-              {/* Live Password Checklist */}
-              {showChecklist && (
-                <ul className="mt-2 space-y-1 text-sm">
-                  {renderCheck(validations.minLength, 'At least 12 characters')}
-                  {renderCheck(validations.hasUpper, 'At least 1 capital letter')}
-                  {renderCheck(validations.hasSpecial, 'At least 1 special character')}
-                  {renderCheck(validations.hasNumber, 'At least 1 number')}
-                  <p className={`text-xs mt-2 font-medium ${strength < 2 ? 'text-red-500' : strength < 4 ? 'text-yellow-500' : 'text-green-600'}`}>
-                    Password strength: {strength < 2 ? 'Weak' : strength < 4 ? 'Moderate' : 'Strong'}
-                  </p>
-                </ul>
-              )}
-            </div>
+                  {/* Live Password Checklist */}
+                  {showChecklist && (
+                    <ul className="mt-2 space-y-1 text-sm bg-gray-50 p-3 rounded-lg">
+                      {renderCheck(validations.minLength, 'At least 12 characters')}
+                      {renderCheck(validations.hasUpper, 'At least 1 capital letter')}
+                      {renderCheck(validations.hasSpecial, 'At least 1 special character')}
+                      {renderCheck(validations.hasNumber, 'At least 1 number')}
+                      <div className="mt-2">
+                        <div className="flex justify-between items-center mb-1">
+                          <p className={`text-xs font-medium ${strength < 2 ? 'text-red-500' : strength < 4 ? 'text-yellow-500' : 'text-green-600'}`}>
+                            Password strength: {strength < 2 ? 'Weak' : strength < 4 ? 'Moderate' : 'Strong'}
+                          </p>
+                        </div>
+                        <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
+                          <div 
+                            className={`h-full ${strength < 2 ? 'bg-red-500' : strength < 4 ? 'bg-yellow-500' : 'bg-green-600'}`}
+                            style={{ width: `${(strength / 4) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    </ul>
+                  )}
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="confirm-password">Confirm Password</Label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                    <Input
+                      id="confirm-password"
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      placeholder="Confirm your password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className={`pl-10 ${errors.confirmPassword ? 'border-red-500' : ''}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
+                  </div>
+                  {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
+                </div>
+              </motion.div>  
+            )}
             
-            <div className="space-y-2">
-              <Label htmlFor="confirm-password">Confirm Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                <Input
-                  id="confirm-password"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  placeholder="Confirm your password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className={`pl-10 ${errors.confirmPassword ? 'border-red-500' : ''}`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                </button>
-              </div>
-              {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
-            </div>
-          </motion.div>  
-          )}
-            
-            <Button type="submit" className="w-full" disabled={loading || !otpVerified}>
-              {loading ? 'Creating Account...' : 'Register'}
+            <Button 
+              type="submit" 
+              className="w-full" 
+              disabled={loading || !otpVerified}
+            >
+              {loading ? 'Creating Account...' : 'Complete Registration'}
             </Button>
           </form>
           
