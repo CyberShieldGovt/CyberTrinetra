@@ -53,7 +53,41 @@ const blogPosts = [
     coverImage: '/credit-card-fraud-in-india-717x404.jpg',
     date: 'March 30, 2025',
     author: 'Cybersecurity Expert'
-  }
+  },
+  {
+      id: '7',
+      title: 'Betting App Scams: How They Operate, What Fuels Them, and Their Impact',
+      excerpt: 'As online betting platforms grow, so do the scams. Learn how these scams work, why they’re spreading, and how they affect real people.',
+      coverImage: '/OnlineBettingScam.png',
+      date: 'March 30, 2025',
+      author: 'Cybersecurity Expert'
+    },
+    {
+      id: '8',
+      title: 'Instagram Hacking via Vote Links: How It Happens and How to Stay Safe',
+      excerpt: 'From phishing scams to malicious vote links — learn how Instagram accounts are being hacked, how to protect yourself, and what to do if your account is compromised.',
+      coverImage: '/InstaHack.png',
+      date: 'March 30, 2025',
+      author: 'Cybersecurity Expert'
+    },
+    {
+      id: '9',
+      title: 'Honeytrapping: The Modern Romance Scam You Should Fear',
+      excerpt: 'Learn how fake romantic profiles manipulate people into sharing secrets, sending money, or falling into blackmail traps. Stay alert, stay protected..',
+      coverImage: '/HoneyTrap.png',
+      date: 'March 30, 2025',
+      author: 'Cybersecurity Expert'
+    },
+    {
+      id: '10',
+      title: 'Network Marketing Scam: The Truth Behind the "Earn by Referring" Trap',
+      excerpt: 'Scammers are using pyramid-style schemes under the guise of network marketing. Learn how they exploit trust with promises of easy money, luxury, and rewards.',
+      coverImage: '/Networkingscam.png',
+      date: 'March 30, 2025',
+      author: 'Cybersecurity Expert'
+    }
+
+
 ];
 
 const Blogs = () => {
