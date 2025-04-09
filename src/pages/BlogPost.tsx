@@ -330,7 +330,230 @@ content: `
         </ul>
         <p class="mb-4">Stay calm and never rush into making payments over phone calls. Scammers rely on fear tactics. Always verify claims through your bank’s official customer service before taking action.</p>
     `
+  },
+  {
+    id: '7',
+    title: 'Betting App Scams: How They Operate, What Fuels Them, and Their Impact',
+    excerpt: 'As online betting platforms grow, so do the scams. Learn how these scams work, why they’re spreading, and how they affect real people.',
+    coverImage: '/OnlineBettingScam.png',
+    date: 'April 10, 2025',
+    author: 'Cybercrime Analyst',
+    readTime: '7 min read',
+    content: `
+      <p class="mb-4">Online betting apps have become wildly popular, offering users the thrill of gambling from the comfort of their devices. However, this convenience has also paved the way for scammers to exploit unsuspecting individuals. Understanding how these fraudulent apps work, what drives their rise, and the devastating impact on victims is essential for staying safe.</p>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">How Betting App Scams Operate</h2>
+
+      <ul class="list-disc list-inside mb-4 space-y-2">
+        <li><strong>Account Blockage After Winning:</strong> Users suddenly find their accounts locked after winning, with no access to their funds and no support from the app.</li>
+        <li><strong>Fake Apps:</strong> Scammers design apps that look like legitimate betting platforms to phish for personal and financial details.</li>
+        <li><strong>Manipulated Odds:</strong> Algorithms within the app are tweaked so that winning is virtually impossible.</li>
+        <li><strong>Unauthorized Transactions:</strong> Scammers use stolen identities to create fake accounts and perform illicit bank withdrawals.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">Why These Scams Are Spreading</h2>
+
+      <ul class="list-disc list-inside mb-4 space-y-2">
+        <li><strong>Regulatory Gaps:</strong> The betting industry is expanding faster than laws can keep up, giving scammers room to operate.</li>
+        <li><strong>Anonymity:</strong> The internet provides cover for cybercriminals to scam people from anywhere in the world.</li>
+        <li><strong>High Profit Margins:</strong> Betting platforms—especially illegal ones—generate enormous revenue, attracting criminals.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">The Impact on Victims</h2>
+
+      <ul class="list-disc list-inside mb-4 space-y-2">
+        <li><strong>Financial Devastation:</strong> Many victims lose life savings with little to no chance of recovery.</li>
+        <li><strong>Emotional Toll:</strong> Betrayal and helplessness can lead to stress, depression, and anxiety.</li>
+        <li><strong>Stolen Identity:</strong> Victims often face additional fraud and harassment from stolen personal data.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">Real Stories from Victims</h2>
+
+      <p class="mb-4">In one case, a widow lost her entire savings after trusting what appeared to be a harmless gaming app—only to be lured into a deeper romance scam. Her story is sadly just one of many.</p>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">Protecting Yourself</h2>
+
+      <ul class="list-disc list-inside mb-4 space-y-2">
+        <li>Stay away from Betting Apps.</li>
+        <li>Do not install any betting applications even if your friend or someone suggests.</li>
+        <li>If you are an influencer please do not promote any betting apps.</li>
+
+        <li>Monitor your bank activity regularly and report suspicious transactions immediately.</li>
+      </ul>
+
+      <p class="mb-4">Online betting may seem exciting, but the risks are real. By staying informed and cautious, you can protect your finances and personal data from falling into the hands of cybercriminals. If something feels off, it probably is—trust your instincts and spread awareness to protect others too.</p>
+    `
+  },
+  {
+    id: '8',
+    title: 'Instagram Hacking via Vote Links: How It Happens and How to Stay Safe',
+    excerpt: 'From phishing scams to malicious vote links — learn how Instagram accounts are being hacked, how to protect yourself, and what to do if your account is compromised.',
+    coverImage: '/InstaHack.png',
+    date: 'April 10, 2025',
+    author: 'Cybersecurity Analyst',
+    readTime: '8 min read',
+    content: `
+      <p class="mb-4">Instagram is a powerful platform, but its popularity makes it a hot target for cybercriminals. One of the most recent threats involves "vote for me" scams that trick users into giving away their login credentials. Let’s break down how these scams work, what other hacking tactics are being used, how to recover a hacked account, and how you can protect yourself from future attacks.</p>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">How Instagram Accounts Are Being Hacked</h2>
+
+      <ul class="list-disc list-inside mb-4 space-y-2">
+        <li><strong>Vote Link Phishing:</strong> Hackers send DMs asking you to vote for them in a fake contest. The link leads to a fake Instagram login page that captures your credentials.</li>
+        <li><strong>Fake Verification Messages:</strong> You may get a DM claiming your account is eligible for a blue checkmark and asking for login info or a link click.</li>
+        <li><strong>Third-Party App Exploits:</strong> Connecting your account to untrusted apps can give hackers indirect access.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">How to Stay Safe from Instagram Scams</h2>
+
+      <ul class="list-disc list-inside mb-4 space-y-2">
+        <li><strong>Enable Two-Factor Authentication (2FA):</strong> This adds a second layer of protection, making it harder for hackers to access your account even with your password.</li>
+        <li><strong>Use Strong, Unique Passwords:</strong> Avoid using the same password across platforms. Include special characters, numbers, and mixed-case letters.</li>
+        <li><strong>Don’t Click Suspicious Links:</strong> Be wary of messages urging you to vote or verify your account unless it’s from an official source.</li>
+        <li><strong>Regularly Review Login Activity:</strong> You can check which devices are logged into your account from Instagram’s settings. Remove anything suspicious.</li>
+        <li><strong>Audit Connected Apps:</strong> Remove access for third-party apps that you no longer use or don’t recognize.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">How to Recover a Hacked Instagram Account</h2>
+
+      <ol class="list-decimal list-inside mb-4 space-y-2">
+        <li><strong>Reset Your Password:</strong> Use the "Forgot password?" option on the login page.</li>
+        <li><strong>Check Email from Instagram:</strong> Look for any security-related emails. If you received a message about email or password changes, use the “revert this change” option.</li>
+              <li><strong>Report the Account:</strong> If you’re locked out, use <a href="https://help.instagram.com/368191326593075/?helpref=hc_fnav" class="text-blue-600 underline" target="_blank" rel="noopener noreferrer">Instagram’s support page</a> to report a hacked account.</li>
+        <li><strong>Submit a Video Selfie:</strong> Instagram might ask you for a video selfie to confirm your identity.</li>
+      </ol>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">Quick Security Tips</h2>
+
+      <ul class="list-disc list-inside mb-4 space-y-2">
+        <li>Don’t share login credentials with anyone—even trusted friends</li>
+        <li>Avoid logging in on shared or public devices</li>
+        <li>Don’t save passwords in browsers on public computers</li>
+        <li>Use password managers for safer password storage</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">Conclusion</h2>
+
+      <p class="mb-4">Instagram hacks are more sophisticated than ever, often hiding behind innocent-looking vote links or fake verification messages. By staying informed, practicing basic cybersecurity hygiene, and knowing how to act fast when something seems wrong, you can keep your account safe. Remember: if something feels suspicious, it probably is—pause before you click.</p>
+    `
+  },
+  {
+    id: '9',
+    title: 'Honeytrapping: The Modern Romance Scam You Should Fear',
+    excerpt: 'Learn how fake romantic profiles manipulate people into sharing secrets, sending money, or falling into blackmail traps. Stay alert, stay protected.',
+    coverImage: '/HoneyTrap.png',
+    date: 'April 10, 2025',
+    author: 'Cybersecurity Analyst',
+    readTime: '7 min read',
+    content: `
+      <p class="mb-4">The digital world has made it easier than ever to connect with others—but it's also opened the door to clever psychological scams. One of the most dangerous trending tactics is called <strong>Honeytrapping</strong>. This isn’t just a scam. It’s emotional manipulation, data theft, and blackmail wrapped in the disguise of romance.</p>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">What is Honeytrapping?</h2>
+      <p class="mb-4">Honeytrapping is a form of online fraud where a scammer pretends to be romantically or sexually interested in a victim. Their goal? Gain trust, extract private content, secrets, or even money — and use it against you.</p>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">How Honeytrapping Works</h2>
+
+      <ol class="list-decimal list-inside mb-4 space-y-2">
+        <li><strong>Fake Profile Creation:</strong> Using stolen or AI-generated images, they build attractive accounts on Instagram, Facebook, Tinder, Telegram, etc.</li>
+        <li><strong>Initial Hook:</strong> They send a flirty DM or romantic message out of nowhere to gain your interest.</li>
+        <li><strong>Emotional Connection:</strong> Over time, they build trust and may escalate to sexting or personal sharing.</li>
+        <li><strong>Exploitation:</strong> They then:
+          <ul class="list-disc list-inside ml-6 mt-2">
+            <li>Blackmail you with images or videos</li>
+            <li>Ask for money due to a fake emergency</li>
+            <li>Install malware through links sent for video chats</li>
+            <li>Extract corporate or personal secrets</li>
+          </ul>
+        </li>
+      </ol>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">Real-World Cases</h2>
+      <ul class="list-disc list-inside mb-4 space-y-2">
+        <li>Several Indian youth have been blackmailed after sending private content.</li>
+        <li>Influencer photos were misused to trap businessmen through fake Insta profiles.</li>
+        <li>Government and military officials have been targeted for espionage.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">How to Stay Safe</h2>
+
+      <ul class="list-disc list-inside mb-4 space-y-2">
+        <li><strong>Never trust unsolicited romantic messages</strong> from strangers online.</li>
+        <li><strong>Reverse image search</strong> to check if someone is using stolen photos.</li>
+        <li><strong>Never share intimate images or personal secrets</strong> online.</li>
+        <li><strong>Avoid clicking unknown links</strong> claiming to be videos or private photos.</li>
+        <li><strong>Use privacy settings</strong> to restrict who can contact or see your profile.</li>
+        <li><strong>Block and report</strong> any suspicious behavior.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">If You Fall Victim</h2>
+      <ul class="list-disc list-inside mb-4 space-y-2">
+        <li><strong>Don’t pay or give in to threats.</strong> Scammers often come back for more.</li>
+        <li><strong>Report immediately</strong> to cybercrime portals:
+          <a href="https://cybercrime.gov.in/" class="text-blue-500 underline">cybercrime.gov.in</a>
+        </li>
+        <li><strong>Report in CyberTrinetra</strong> download the FIR and register case in CyberTrinetra and track case.</li>
+        <li><strong>Change your passwords</strong> and secure all accounts.</li>
+        <li><strong>Talk to someone you trust</strong> instead of hiding in shame.</li>
+      </ul>
+
+      <p class="mb-4">The world of online romance isn’t all love and roses. Scammers are smart, manipulative, and emotionally strategic. Stay alert, stay skeptical, and protect yourself and your loved ones from this modern trap.</p>
+    `
+  },
+  {
+    id: '10',
+    title: 'Network Marketing Scam: The Truth Behind the "Earn by Referring" Trap',
+    excerpt: 'Scammers are using pyramid-style schemes under the guise of network marketing. Learn how they exploit trust with promises of easy money, luxury, and rewards.',
+    coverImage: '/Networkingscam.png',
+    date: 'April 10, 2025',
+    author: 'Cybersecurity Analyst',
+    readTime: '6 min read',
+    content: `
+      <p class="mb-4">In the name of "passive income" and "financial freedom", a growing number of fraudulent schemes are being disguised as <strong>network marketing</strong. These aren’t businesses — they’re scams based on the <strong>Pyramid Scheme</strong> model, and they’ve been fooling students, job seekers, and even working professionals across India.</p>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">What is the Network Marketing Scam?</h2>
+      <p class="mb-4">You’re asked to pay an initial fee (₹3,000–₹10,000) to join a “business opportunity”. Then, to earn your money back, you’re told to get 3 or more people to join under you — and the cycle continues. The more you recruit, the more you supposedly earn — with fake promises of getting bikes, cars, phones, or international travel.</p>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">How It Works</h2>
+      <ol class="list-decimal list-inside mb-4 space-y-2">
+        <li><strong>Initial Payment:</strong> You pay an entry fee to “start the business”.</li>
+        <li><strong>Recruitment Pressure:</strong> You must add 3+ people to recover your money and start “earning”.</li>
+        <li><strong>Level-Based Earning:</strong> Every layer under you supposedly generates income for you.</li>
+        <li><strong>Fake Lifestyle Projection:</strong> Scammers show off rented luxury cars, fake earnings, and social media posts to look successful.</li>
+      </ol>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">Why It’s a Scam</h2>
+      <ul class="list-disc list-inside mb-4 space-y-2">
+        <li>Income is dependent only on recruiting new members — not selling any real product or service.</li>
+        <li>Only the people at the top of the pyramid make money; most at the bottom lose their investment.</li>
+        <li>It’s <strong>legally banned in India</strong> under the Prize Chits and Money Circulation Schemes (Banning) Act, 1978.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">Real-Life Case</h2>
+      <p class="mb-4">The EBIZ scam in India promised personal development courses and tech products. In reality, it was a massive pyramid scheme. Thousands joined, but only top-level recruiters profited. The company was eventually shut down by law enforcement.</p>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">Red Flags to Watch</h2>
+      <ul class="list-disc list-inside mb-4 space-y-2">
+        <li>Joining fee for income-based opportunities</li>
+        <li>More focus on recruitment than actual product value</li>
+        <li>Pressure to convince friends and family to join</li>
+        <li>Fake testimonials and staged luxury lifestyle</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold mt-8 mb-4">How to Stay Safe</h2>
+      <ul class="list-disc list-inside mb-4 space-y-2">
+        <li><strong>Research the company</strong> before paying anything.</li>
+        <li><strong>Ask:</strong> Is there a real product? Can it be sold without referrals?</li>
+        <li><strong>Talk to verified professionals</strong> before investing your time or money.</li>
+        <li><strong>Report pyramid schemes</strong> to authorities like:
+          <a href="https://cybercrime.gov.in/" class="text-blue-500 underline">cybercrime.gov.in</a>
+        </li>
+        <li><strong>Report in CyberTrinetra</strong> download the FIR and register case in CyberTrinetra and track case.</li>
+      </ul>
+
+      <p class="mb-4">Scammers prey on dreams. Don’t fall for false promises of fast money. Stay informed, stay skeptical, and help others recognize the trap before they get caught in the pyramid.</p>
+    `
   }
+
+
 ];
 
 const BlogPost = () => {
