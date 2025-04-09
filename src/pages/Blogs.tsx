@@ -3,8 +3,8 @@ import { Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Input } from "@/components/ui/input";
 import BlogCard from '@/components/BlogCard';
-import { useSearchParams } from 'react-router-dom';
 
+// Sample blog data
 const blogPosts = [
   {
     id: '1',
@@ -53,48 +53,34 @@ const blogPosts = [
     coverImage: '/credit-card-fraud-in-india-717x404.jpg',
     date: 'March 30, 2025',
     author: 'Cybersecurity Expert'
-  },
-  {
-    id: '7',
-    title: 'Betting App Scams: How They Operate, What Fuels Them, and Their Impact',
-    excerpt: 'As online betting platforms grow, so do the scams. Learn how these scams work, why they’re spreading, and how they affect real people.',
-    coverImage: '/OnlineBettingScam.png',
-    date: 'March 30, 2025',
-    author: 'Cybersecurity Expert'
-  },
-  {
-    id: '8',
-    title: 'Instagram Hacking via Vote Links: How It Happens and How to Stay Safe',
-    excerpt: 'From phishing scams to malicious vote links — learn how Instagram accounts are being hacked, how to protect yourself, and what to do if your account is compromised.',
-    coverImage: '/OnlineBettingScam.png',
-    date: 'March 30, 2025',
-    author: 'Cybersecurity Expert'
   }
 ];
 
 const Blogs = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredBlogs, setFilteredBlogs] = useState(blogPosts);
-  const [searchParams] = useSearchParams();
-  const blogId = searchParams.get("id");
-
-  const selectedBlog = blogPosts.find((post) => post.id === blogId);
-
+  
   useEffect(() => {
     window.scrollTo(0, 0);
-
+    
+    // Filter blogs based on search term
     if (searchTerm.trim() === '') {
       setFilteredBlogs(blogPosts);
     } else {
       const filtered = blogPosts.filter(
-        post =>
+        post => 
           post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
           post.author.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredBlogs(filtered);
     }
+    
+    // Debug: log current route
+    console.log("Current route:", window.location.pathname);
   }, [searchTerm]);
+
+  console.log("Blogs page loaded, available blog posts:", blogPosts.map(b => b.id));
 
   return (
     <div className="min-h-screen bg-cyber-light-gray py-12">
@@ -112,53 +98,42 @@ const Blogs = () => {
               Stay informed on the latest cybersecurity threats, prevention tips, and best practices to protect yourself online.
             </p>
           </div>
-
-          {blogId && selectedBlog ? (
-            <div className="max-w-3xl mx-auto text-left bg-white rounded-lg shadow-md p-6">
-              <img src={selectedBlog.coverImage} alt={selectedBlog.title} className="w-full rounded mb-4" />
-              <h2 className="text-3xl font-bold text-cyber-dark-blue mb-2">{selectedBlog.title}</h2>
-              <p className="text-gray-600 mb-4">{selectedBlog.date} • {selectedBlog.author}</p>
-              <p className="text-lg text-gray-700">{selectedBlog.excerpt}</p>
+          
+          <div className="max-w-xl mx-auto mb-12">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Input
+                placeholder="Search blogs by title, content, or author..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
             </div>
-          ) : (
-            <>
-              <div className="max-w-xl mx-auto mb-12">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                  <Input
-                    placeholder="Search blogs by title, content, or author..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredBlogs.length > 0 ? (
+              filteredBlogs.map((post, index) => (
+                <BlogCard
+                  key={post.id}
+                  id={post.id}
+                  title={post.title}
+                  excerpt={post.excerpt}
+                  coverImage={post.coverImage}
+                  date={post.date}
+                  author={post.author}
+                  index={index}
+                />
+              ))
+            ) : (
+              <div className="col-span-1 md:col-span-2 lg:col-span-3 text-center py-12">
+                <h3 className="text-xl font-semibold text-cyber-dark-blue mb-2">No blogs found</h3>
+                <p className="text-gray-600">
+                  Try adjusting your search or check back later for new content.
+                </p>
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredBlogs.length > 0 ? (
-                  filteredBlogs.map((post, index) => (
-                    <BlogCard
-                      key={post.id}
-                      id={post.id}
-                      title={post.title}
-                      excerpt={post.excerpt}
-                      coverImage={post.coverImage}
-                      date={post.date}
-                      author={post.author}
-                      index={index}
-                    />
-                  ))
-                ) : (
-                  <div className="col-span-3 text-center py-12">
-                    <h3 className="text-xl font-semibold text-cyber-dark-blue mb-2">No blogs found</h3>
-                    <p className="text-gray-600">
-                      Try adjusting your search or check back later for new content.
-                    </p>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
+            )}
+          </div>
         </motion.div>
       </div>
     </div>
