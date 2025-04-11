@@ -15,18 +15,19 @@ import {
 } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from '@/hooks/use-toast';
+import { deleteUserProfiles, getAdminUserProfiles } from '@/services';
+import { toast } from "sonner";
 
 type UserType = {
-  id: string;
+  _id: string;
   name: string;
   email: string;
-  mobile?: string;
+  phone?: string;
   isAdmin?: boolean;
 };
 
 const AdminUsers = () => {
   const { isAuthenticated, isAdmin } = useAuth();
-  const { toast } = useToast();
   const [users, setUsers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState(true);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
@@ -36,35 +37,40 @@ const AdminUsers = () => {
     fetchUsers();
   }, []);
 
-  // Mock function to fetch users
-  const fetchUsers = () => {
-    // In a real app, this would be an API call
-    setTimeout(() => {
-      const mockUsers = [
-        { id: '1', name: 'John Doe', email: 'john@example.com', mobile: '9876543210' },
-        { id: '2', name: 'Jane Smith', email: 'jane@example.com', mobile: '8765432109' },
-        { id: '3', name: 'Admin User', email: 'admin@cybertrinetri.com', mobile: '7654321098', isAdmin: true },
-        { id: '4', name: 'Alice Johnson', email: 'alice@example.com', mobile: '6543210987' },
-        { id: '5', name: 'Bob Williams', email: 'bob@example.com', mobile: '5432109876' }
-      ];
-      // Filter out admin users
-      const regularUsers = mockUsers.filter(user => !user.isAdmin);
-      setUsers(regularUsers);
-      setLoading(false);
-    }, 1000);
+  const fetchUsers = async()=>{
+    setLoading(true)
+    try{
+      const response = await getAdminUserProfiles()
+      if(response?.success){
+        setUsers(response?.admin)
+        setLoading(false)
+      }    
+    }catch(err){
+      toast.error("No data found")
+      setLoading(false)
+    }finally{
+      setLoading(false)
+    }
+  }
+
+  const handleDeleteUser = async (userId: string) => {
+    setLoading(true)
+    try{
+      const res = await deleteUserProfiles({userId})
+      if(res?.success){
+        toast.success("User has been successfully removed from the system")
+        setConfirmDelete(null);
+        setLoading(false)
+        fetchUsers()
+      }
+    }catch(err){
+      toast.error("Failed to delete user!")
+      setLoading(false)
+    }finally{
+      setLoading(false)
+    }
   };
 
-  const handleDeleteUser = (userId: string) => {
-    // In a real app, this would be an API call
-    setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
-    toast({
-      title: "User deleted",
-      description: "User has been successfully removed from the system",
-    });
-    setConfirmDelete(null);
-  };
-
-  // Redirect if not authenticated or not admin
   if (!isAuthenticated || !isAdmin) {
     return <Navigate to="/login" />;
   }
@@ -130,16 +136,16 @@ const AdminUsers = () => {
                   </TableHeader>
                   <TableBody>
                     {users.map((user) => (
-                      <TableRow key={user.id}>
-                        <TableCell className="font-medium">{user.name}</TableCell>
-                        <TableCell>{user.email}</TableCell>
-                        <TableCell>{user.mobile || 'N/A'}</TableCell>
+                      <TableRow key={user?._id}>
+                        <TableCell className="font-medium">{user?.name}</TableCell>
+                        <TableCell>{user?.email}</TableCell>
+                        <TableCell>{user?.phone || 'N/A'}</TableCell>
                         <TableCell className="text-right">
                           <Button
                             variant="ghost"
                             size="sm"
                             className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                            onClick={() => setConfirmDelete(user.id)}
+                            onClick={() => setConfirmDelete(user?._id)}
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>

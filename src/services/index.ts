@@ -2,8 +2,8 @@ import axios, { AxiosResponse } from "axios";
 import { toast } from "sonner";
 
 //modified the base url
-// const BASE_URL = "http://localhost:5000/api/v1/"
-const BASE_URL = "https://prod.cybertrinetra.com/api/v1/"
+const BASE_URL = "http://localhost:5000/api/v1/"
+// const BASE_URL = "https://prod.cybertrinetra.com/api/v1/"
 
 export const loginUser = async ({ email, password }: { email: string; password: string }): Promise<{
     user: any;
@@ -217,6 +217,44 @@ export const forgetPassword = async ({email, password, otp}:{email: string, pass
             success: any;
             message: string;
         }> = await axios.post(url,{email, password, otp});
+
+        return response.data;
+    } catch (error) {
+        console.error('Error getting user:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};
+
+export const getAdminUserProfiles = async () => {
+    try {
+        const url = BASE_URL + `admin/getAllUsers`;        
+        const response: AxiosResponse<{
+            admin: any;
+            success: any;
+        }> = await axios.get(url, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error('Error getting user:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};
+
+export const deleteUserProfiles = async ({userId}: {userId: string}) => {
+    try {
+        const url = BASE_URL + `admin/deleteUser?consumerId=${userId}`;        
+        const response: AxiosResponse<{
+            admin: any;
+            success: any;
+        }> = await axios.delete(url, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+        });
 
         return response.data;
     } catch (error) {
