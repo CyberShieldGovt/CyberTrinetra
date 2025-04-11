@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { toast } from "sonner";
 
-//modified the base url
+//modified this base url
 const BASE_URL = "http://localhost:5000/api/v1/"
 // const BASE_URL = "https://prod.cybertrinetra.com/api/v1/"
 
