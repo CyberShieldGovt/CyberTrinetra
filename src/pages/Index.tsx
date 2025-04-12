@@ -18,7 +18,7 @@ const Index = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Case card data
+  // Case card data here
   const caseTypes = [
     {
       title: 'Women and Child Related Cases',
