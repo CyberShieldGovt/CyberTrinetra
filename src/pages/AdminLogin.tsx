@@ -18,7 +18,7 @@ import { sendOtpForAdmin, verifyOtpToRegister } from '@/services';
 const AdminLogin = () => {
   const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
-  // Authentication flow states
+  // Authentication flow states here
   const [adminId, setAdminId] = useState('');
   const [otp, setOtp] = useState('');
   const [password, setPassword] = useState('');
