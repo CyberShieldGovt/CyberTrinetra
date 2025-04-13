@@ -13,11 +13,11 @@ import {
   InputOTPGroup, 
   InputOTPSlot 
 } from "@/components/ui/input-otp";
+import { sendOtpForAdmin, verifyOtpToRegister } from '@/services';
 
 const AdminLogin = () => {
   const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
-  
   // Authentication flow states
   const [adminId, setAdminId] = useState('');
   const [otp, setOtp] = useState('');
@@ -47,27 +47,20 @@ const AdminLogin = () => {
     setVerifyingId(true);
     
     try {
-      // Mock admin ID verification 
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // For demo: Only accept specific admin ID
-      if (adminId.toLowerCase() === 'admin') {
+           
         setSendingOtp(true);
-        
         try {
-          // Mock OTP sending - in a real app, this would call an API
-          await new Promise(resolve => setTimeout(resolve, 1500));
-          toast.success('OTP sent to your registered email');
-          setStep(2);
+          const res =await sendOtpForAdmin({email: adminId});
+          if(res?.success){
+            toast.success('OTP sent to your registered email');
+            setStep(2);
+          }
         } catch (error) {
           console.error('Error sending OTP:', error);
-          toast.error('Failed to send OTP');
+          toast.error('Enter valid Admin ID');
         } finally {
           setSendingOtp(false);
         }
-      } else {
-        toast.error('Invalid Admin ID');
-      }
     } catch (error) {
       console.error('Error verifying Admin ID:', error);
       toast.error('Failed to verify Admin ID');
@@ -86,11 +79,11 @@ const AdminLogin = () => {
     
     try {
       // Mock OTP verification 
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // For demo: Accept any 6-digit OTP
-      toast.success('OTP verified successfully');
-      setStep(3);
+      const res = await verifyOtpToRegister({email: adminId, otp: Number(otp)});
+      if (res?.success) {
+        toast.success('OTP verified successfully');
+        setStep(3); 
+      }
     } catch (error) {
       console.error('Error verifying OTP:', error);
       toast.error('OTP verification failed');
@@ -108,15 +101,7 @@ const AdminLogin = () => {
     setLoggingIn(true);
     
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // For demo: Only accept specific password
-      if (password === 'admin123') {
-        // Use the existing login function with admin credentials
-        await login('admin@cybertrinetri.com', 'password');
-      } else {
-        toast.error('Invalid password');
-      }
+      await login(adminId, password);
     } catch (error) {
       console.error('Login error:', error);
       toast.error('Login failed');

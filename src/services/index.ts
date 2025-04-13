@@ -262,3 +262,48 @@ export const deleteUserProfiles = async ({userId}: {userId: string}) => {
         throw error;
     }
 };
+
+export const sendOtpToRegister = async ({email}:{email: string}) => {
+    try {
+        const url = BASE_URL + `auth/send-otp-register`;        
+        const response: AxiosResponse<{
+            user: any;
+            success: any;
+        }> = await axios.post(url,{email});
+
+        return response.data;
+    } catch (error) {
+        console.error('Error getting user:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};
+
+export const sendOtpForAdmin = async ({email}:{email: string}) => {
+    try {
+        const url = BASE_URL + `admin/sendOtp`;        
+        const response: AxiosResponse<{
+            user: any;
+            success: any;
+        }> = await axios.post(url,{email});
+
+        return response.data;
+    } catch (error) {
+        console.error('Error getting user:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};
+
+export const verifyOtpToRegister = async ({email, otp}:{email: string, otp: number}) => {
+    try {
+        const url = BASE_URL + `auth/verify-otp-register`;        
+        const response: AxiosResponse<{
+            user: any;
+            success: any;
+        }> = await axios.post(url,{email, otp});
+
+        return response.data;
+    } catch (error) {
+        console.error('Error getting user:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};

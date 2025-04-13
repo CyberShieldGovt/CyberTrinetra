@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { Progress } from "@/components/ui/progress";
+import { sendOtp, sendOtpToRegister, verifyOtpToRegister } from '@/services';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -25,10 +26,9 @@ const Register = () => {
   const [otpVerified, setOtpVerified] = useState(false);
   const [sendingOtp, setSendingOtp] = useState(false);
   const [verifyingOtp, setVerifyingOtp] = useState(false);
-  const [step, setStep] = useState(1); // 1: Basic Info, 2: Email Verification, 3: Password Setup
+  const [step, setStep] = useState(1); 
   
   const { register, loading } = useAuth();
-  const { toast } = useToast();
 
   const validateEmail = () => {
     if (!email.trim()) return 'Email is required';
@@ -36,7 +36,7 @@ const Register = () => {
     return '';
   };
 
-  const sendOtp = async () => {
+  const sendOtpFunc = async () => {
     const emailError = validateEmail();
     if (emailError) {
       setErrors(prev => ({ ...prev, email: emailError }));
@@ -45,20 +45,18 @@ const Register = () => {
 
     setSendingOtp(true);
     try {
-      // In a real app, this would call an API endpoint to send OTP
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setOtpSent(true);
-      setErrors(prev => ({ ...prev, email: '' }));
-      setStep(2); // Move to email verification step
-      
-      // Mock OTP sent success message
-      toast({
-        title: "OTP Sent Successfully",
-        description: "A verification code has been sent to your email.",
-      });
+      const res = await sendOtpToRegister({email});
+      if(res?.success) {
+        toast.success("Verification code has been sent to your email.");
+        setSendingOtp(false);
+        setOtpSent(true);
+        setErrors(prev => ({ ...prev, email: '' }));
+        setStep(2); 
+
+      }
     } catch (error) {
-      setErrors(prev => ({ ...prev, otp: 'Failed to send OTP' }));
-    } finally {
+      toast.error(error?.response?.data?.message || "An error occurred while sending the reset code.");
+      console.error('Reset password error:', error);
       setSendingOtp(false);
     }
   };
@@ -71,18 +69,13 @@ const Register = () => {
 
     setVerifyingOtp(true);
     try {
-      // In a real app, this would verify the OTP with an API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // For demo purpose, any 6-digit code is considered valid
-      setOtpVerified(true);
-      setErrors(prev => ({ ...prev, otp: '' }));
-      setStep(3); // Move to password setup step
-      
-      toast({
-        title: "Email Verified",
-        description: "Your email has been successfully verified.",
-      });
+      const res = await verifyOtpToRegister({email, otp: Number(otp)});
+      if(res?.success) {
+        setOtpVerified(true);
+        setErrors(prev => ({ ...prev, otp: '' }));
+        setStep(3);
+        toast.success("Email verified successfully.");
+      }
     } catch (error) {
       setErrors(prev => ({ ...prev, otp: 'Invalid OTP' }));
     } finally {
@@ -210,7 +203,7 @@ const Register = () => {
                 </div>
                 <Button 
                   type="button" 
-                  onClick={sendOtp} 
+                  onClick={sendOtpFunc} 
                   disabled={sendingOtp || otpVerified || !email} 
                   className="whitespace-nowrap"
                   variant={otpVerified ? "outline" : "default"}
@@ -260,7 +253,7 @@ const Register = () => {
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={sendOtp}
+                    onClick={sendOtpFunc}
                     disabled={sendingOtp}
                   >
                     Resend OTP
@@ -386,7 +379,7 @@ const Register = () => {
             <Button 
               type="submit" 
               className="w-full" 
-              disabled={loading || !otpVerified}
+              disabled={loading || !otpVerified || !password || !confirmPassword }
             >
               {loading ? 'Creating Account...' : 'Complete Registration'}
             </Button>
