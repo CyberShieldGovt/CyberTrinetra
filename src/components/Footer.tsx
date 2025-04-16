@@ -87,8 +87,7 @@ const Footer = () => {
               <p className="mb-2">K R Puram , Bengalore</p>
               <p className="mb-2">Karnataka</p>
               <p className="mb-2">India-560036</p>
-              <p className="mb-2">Phone: +91 9876543210</p>
-              <p>Email: support@cybertrinetra.com</p>
+              <p className="mb-2">Email: support@cybertrinetra.com</p>
             </address>
           </div>
         </div>
