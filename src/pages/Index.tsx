@@ -87,13 +87,13 @@ const Index = () => {
   const stats = [
     {
       icon: Users,
-      title: 'Cases Resolved Women',
+      title: 'Women Related Resolved Cases',
       endValue: 15,
       suffix: '+'
     },
     {
       icon: DollarSign,
-      title: 'Financial Cases Solved',
+      title: 'Financial Fraud Cases Solved',
       endValue: 10,
       suffix: '+'
     },
@@ -105,7 +105,7 @@ const Index = () => {
     },
     {
       icon: Award,
-      title: 'Appreciations from Dept',
+      title: 'Appreciations from Police Dept',
       endValue: 5,
       suffix: '+'
     }
