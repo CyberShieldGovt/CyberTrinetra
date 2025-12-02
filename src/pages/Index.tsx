@@ -1,6 +1,7 @@
-import { useEffect, useState, useRef } from 'react';
+
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, ChevronRight, Users, DollarSign, Award } from 'lucide-react';
+import { Shield, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import CaseCard from '@/components/CaseCard';
@@ -9,73 +10,6 @@ import FactCheckerIntro from '@/components/FactCheckerIntro';
 import { useAuth } from '@/components/AuthContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-const StatCard = ({ icon: Icon, title, endValue, suffix = '+' }) => {
-  const [count, setCount] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-  const cardRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
-    return () => {
-      if (cardRef.current) {
-        observer.unobserve(cardRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible) return;
-
-    let startTime;
-    const duration = 2000;
-
-    const animate = (currentTime) => {
-      if (!startTime) startTime = currentTime;
-      const progress = Math.min((currentTime - startTime) / duration, 1);
-      
-      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-      const currentCount = Math.floor(easeOutQuart * endValue);
-      
-      setCount(currentCount);
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
-
-    requestAnimationFrame(animate);
-  }, [isVisible, endValue]);
-
-  return (
-    <div 
-      ref={cardRef}
-      className="bg-white rounded-xl shadow-soft p-6 flex flex-col items-center text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl border border-gray-100"
-    >
-      <div className="bg-cyber-blue/10 rounded-full p-4 mb-4">
-        <Icon className="h-8 w-8 text-cyber-blue" />
-      </div>
-      <div className="text-4xl font-bold text-cyber-dark-blue mb-2">
-        {count}{suffix}
-      </div>
-      <div className="text-sm text-gray-600 font-medium">
-        {title}
-      </div>
-    </div>
-  );
-};
-
 const Index = () => {
   const { isAuthenticated } = useAuth();
   const isMobile = useIsMobile();
@@ -83,33 +17,6 @@ const Index = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const stats = [
-    {
-      icon: Users,
-      title: 'Cases Resolved Women',
-      endValue: 15,
-      suffix: '+'
-    },
-    {
-      icon: DollarSign,
-      title: 'Financial Cases Solved',
-      endValue: 10,
-      suffix: '+'
-    },
-    {
-      icon: Shield,
-      title: 'Cases Solved in Collab of Police Dept',
-      endValue: 5,
-      suffix: '+'
-    },
-    {
-      icon: Award,
-      title: 'Appreciations from Dept',
-      endValue: 5,
-      suffix: '+'
-    }
-  ];
 
   // Case card data here
   const caseTypes = [
@@ -197,42 +104,6 @@ const Index = () => {
               </div>
             </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* Statistics Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-cyber-dark-blue">Our Impact</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Making a difference in cybersecurity through dedicated service and collaboration
-            </p>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-          >
-            {stats.map((stat, index) => (
-              <StatCard
-                key={index}
-                icon={stat.icon}
-                title={stat.title}
-                endValue={stat.endValue}
-                suffix={stat.suffix}
-              />
-            ))}
-          </motion.div>
         </div>
       </section>
 
